@@ -1,0 +1,4 @@
+{
+  "note": "This repo scans itself. The two files ignored below QUOTE example leaks on purpose - the README shows what the tool catches, and verify.mjs carries the rule comments. Everything else in the repo is genuinely scanned.",
+  "ignore": ["README.md", "verify.mjs"]
+}

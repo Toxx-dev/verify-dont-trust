@@ -1,0 +1,31 @@
+{
+  "name": "verify-dont-trust",
+  "version": "1.0.0",
+  "description": "A leak scanner for things that were never meant to ship: old brand names, absolute paths, credential-shaped strings, and unfinished placeholders. Zero dependencies.",
+  "type": "module",
+  "bin": {
+    "verify-dont-trust": "verify.mjs"
+  },
+  "files": [
+    "verify.mjs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node verify.mjs --self-test",
+    "scan": "node verify.mjs --dir ."
+  },
+  "keywords": [
+    "security",
+    "leak",
+    "secrets",
+    "static-site",
+    "pre-deploy",
+    "ci",
+    "checklist"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}

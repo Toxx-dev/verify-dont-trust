@@ -1,0 +1,24 @@
+name: scan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  leak-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 1. the scanner proves itself before it is trusted with anything
+      - name: self-test
+        run: node verify.mjs --self-test
+
+      # 2. and then it does the job on a folder that is meant to be published.
+      #    (Scanning this repo's own root would flag the README, which deliberately quotes
+      #     the kinds of leaks the tool looks for — a nice demonstration, a bad CI signal.)
+      - name: scan the example site
+        run: node verify.mjs --dir examples/clean-site
