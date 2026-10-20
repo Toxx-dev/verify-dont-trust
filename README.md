@@ -1,10 +1,26 @@
 # verify-dont-trust
 
+[![scan](https://github.com/Toxx-dev/verify-dont-trust/actions/workflows/scan.yml/badge.svg)](https://github.com/Toxx-dev/verify-dont-trust/actions/workflows/scan.yml)
+
 **A leak scanner for things that were never meant to ship.** Zero dependencies, one file, exit code 1 when it finds something — so it drops straight into CI.
 
 ```bash
 node verify.mjs --dir ./public
 ```
+
+## Getting it
+
+No install, no dependencies — one file and Node 18 or newer.
+
+```bash
+git clone https://github.com/Toxx-dev/verify-dont-trust.git
+cd verify-dont-trust
+
+node verify.mjs --self-test            # 10/10 — the scanner proves itself before it is trusted
+node verify.mjs --dir examples/clean-site   # a clean folder: exit 0, nothing found
+```
+
+Then point it at the folder you are about to publish, or copy `verify.mjs` into a project and wire it into your deploy step.
 
 ## Why this exists
 
@@ -56,6 +72,8 @@ node verify.mjs --example-config > .leakscan.json
 - **`terms`** — plain strings, matched case-insensitively. Add `"regex": true` for a pattern, `"caseSensitive": true` if you must.
 - **`placeholders`** — the TODO/placeholder pass, applied to HTML and CSS only (it would be noise in code).
 - **`ignore`** — globs, relative to the scanned folder. `*` within a path segment, `**` across them.
+
+The file is picked up automatically: the scanner reads `.leakscan.json` from the folder you are scanning, then from the current folder. `--config <file>` names a different one. (This repo ignores its own `README.md` and `verify.mjs` that way — both quote example leaks on purpose.)
 
 ## Also scans a URL
 

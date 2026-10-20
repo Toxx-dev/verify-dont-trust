@@ -331,7 +331,19 @@ if (argv.includes('--example-config')) {
 
 const dir = arg('dir');
 const url = arg('url');
-const configFile = arg('config');
+// A config next to what is being scanned is the convention, not a flag to remember:
+// `--dir ./public` picks up `./public/.leakscan.json`, then `./.leakscan.json`, unless
+// `--config` names one. (Added 2026-10-19: the README told people to create
+// `.leakscan.json`, and the tool ignored it unless they also passed the flag - the
+// repo's own `node verify.mjs --dir .` reported six findings in the files the config
+// had already ignored.)
+function findDefaultConfig(folder) {
+  const candidates = [];
+  if (folder) candidates.push(path.join(folder, '.leakscan.json'));
+  candidates.push(path.resolve('.leakscan.json'));
+  return candidates.find((file) => { try { return fs.statSync(file).isFile(); } catch { return false; } });
+}
+const configFile = arg('config') || findDefaultConfig(dir);
 const JSON_OUT = argv.includes('--json');
 
 if (!dir && !url) {
